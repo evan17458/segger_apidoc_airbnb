@@ -1,0 +1,94 @@
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+model User {
+  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  name            String?
+  email           String?   @unique
+  emailVerified   DateTime?
+  image           String?
+  hashedPassword  String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  favoriteIds     String[] @db.ObjectId
+
+  accounts Account[]
+  listings Listing[]
+  reservations Reservation[]
+}
+model Account {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId             String   @db.ObjectId
+  type               String
+  provider           String //帳戶提供者名稱(例如 google、facebook)
+  providerAccountId  String//在提供者平台的唯一帳戶 ID
+  refresh_token      String?  @db.String
+  access_token       String?  @db.String//該欄位存儲可變長度的字符串數據,並且根據資料庫自動進行類型映射。
+  expires_at         Int?
+  token_type         String? //access token 的類型
+  scope              String? //此token可訪問的範圍
+  id_token           String?  @db.String
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  //確保同一個 provider 和 providerAccountId 的組合唯一,避免帳戶重複
+}
+model Listing {
+  id             String @id @default(auto()) @map("_id") @db.ObjectId
+  title String
+  description String
+  imageSrc String
+  createdAt DateTime @default(now())
+  category  String
+  roomCount Int
+  bathroomCount Int
+  guestCount Int
+  locationValue String
+  userId String @db.ObjectId
+  price Int
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+// 這段程式碼是在定義 Listing 模型與 User 模型之間的關聯關係。具體來說:
+// @relation - 表示這裡是定義模型關聯
+// fields: [userId] - 指定關聯的當前模型(Listing)中參照的欄位是 userId
+// references: [id] - 指定被關聯的模型(User)中被關聯的欄位是 id,
+//  即將 userId 對應到 User 模型的 id 欄位
+// onDelete: Cascade - 指定當 User 被刪除時的操作,在這裡是聯動刪除,
+//即如果刪除了 User,其對應的 Listing 也會被刪除
+// 簡單來說,這段程式碼建立了 Listing 模型和 User 模型的一對多關係,
+//一個 User(房東)可以發佈多個 Listing(房源),透過 userId 和 id 欄位進行對應關聯。
+// 當 User 被刪除時,其發佈的所有 Listing 也會被聯動刪除,以保持數據完整性。
+  reservations Reservation[]
+}
+model Reservation {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  listingId String @db.ObjectId  
+  startDate DateTime
+  endDate DateTime
+  totalPrice Int
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+}
+// @db.ObjectId 是 MongoDB 資料庫中定義的一種數據類型,
+//代表系統自動生成的 12 字節長度的唯一 ID。它由以下幾部分組成:
+// 4 字節時間戳 - 表示生成該 ID 的時間
+// 5 字節隨機數 - 通過算法生成的隨機數據
+// 3 字節遞增計數器 - 遞增的計數器,防止在同一時間生成的 ID 衝突
+// 在 Listing 模型中,使用 @db.ObjectId 標記的 userId 欄位,
+//指的是這個房源是哪個 User 模型對象發布的,系統會自動生成一個唯一 ID 填入。
+// @db.ObjectId 的幾個主要優點:
+// 唯一性 - 生成的 ID 避免了重複的可能
+// 索引 - ObjectId 可以直接用於 MongoDB 索引,查詢效率高
+// 時間排序 - ObjectId 中的時間戳部分可以用於大致時間排序
+// 所以在 MongoDB 系統中,常會用 @db.ObjectId 來標記需要一個唯一 ID 的欄位,
+//像是用戶 ID,帖子 ID 等等。這是 MongoDB 模型定義的一個常見和有效的方式。
