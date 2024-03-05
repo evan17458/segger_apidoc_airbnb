@@ -6,9 +6,6 @@ import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 import prisma from "@/app/libs/prismadb";
-//上面拿到PrismaClient
-// https://authjs.dev/reference/adapter/prisma
-//官網有教範例
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
