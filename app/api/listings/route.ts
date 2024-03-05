@@ -1,8 +1,37 @@
 import { NextResponse } from "next/server";
-
 import prisma from "@/app/libs/prismadb";
 import getCurrentUser from "@/app/actions/getCurrentUser";
-
+/**
+ * @swagger
+ * /api/listings:
+ *   post:
+ *     summary: 房東發佈房源
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - title
+ *               - description
+ *               - imageSrc
+ *               # etc
+ *             properties:
+ *               title:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               imageSrc:
+ *                 type: string
+ *               # other listing properties
+ *     responses:
+ *       201:
+ *         description: Created listing object
+ *       401:
+ *         description: Not authenticated
+ *       400:
+ *         description: Bad request / invalid data
+ */
 export async function POST(request: Request) {
   const currentUser = await getCurrentUser();
 

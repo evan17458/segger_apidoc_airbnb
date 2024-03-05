@@ -6,6 +6,27 @@ import prisma from "@/app/libs/prismadb";
 interface IParams {
   reservationId?: string;
 }
+/**
+ * @swagger
+ * /api/reservations/{reservationId}:
+ *   delete:
+ *     summary: 取消預約
+ *     parameters:
+ *       - name: reservationId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Deleted reservation object
+ *       401:
+ *         description: Not authenticated
+ *       403:
+ *         description: Not authorized to cancel this reservation
+ *       404:
+ *         description: Reservation not found
+ */
 
 export async function DELETE(
   request: Request,

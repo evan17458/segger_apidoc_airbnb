@@ -1,7 +1,22 @@
 import prisma from "@/app/libs/prismadb";
 
-import getCurrentUser from "./getCurrentUser";
-
+import getCurrentUser from "@/app/actions/getCurrentUser";
+/**
+ * @swagger
+ * /api/listings/favorites:
+ *   get:
+ *     summary: 取得使用者我的最愛
+ *     responses:
+ *       200:
+ *         description: Array of favorite listings
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *
+ *       401:
+ *         description: Not authenticated
+ */
 export default async function getFavoriteListings() {
   try {
     const currentUser = await getCurrentUser();

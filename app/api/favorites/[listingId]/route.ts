@@ -6,7 +6,37 @@ import prisma from "@/app/libs/prismadb";
 interface IParams {
   listingId?: string;
 }
-
+/**
+ * @swagger
+ * /api/favorites/{listingId}:
+ *   post:
+ *     summary: 增加你的最愛
+ *     parameters:
+ *       - name: listingId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Updated user object
+ *       401:
+ *         description: Not authenticated
+ *
+ *   delete:
+ *     summary: 去除你的最愛
+ *     parameters:
+ *       - name: listingId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Updated user object
+ *       401:
+ *         description: Not authenticated
+ */
 export async function POST(request: Request, { params }: { params: IParams }) {
   const currentUser = await getCurrentUser();
 

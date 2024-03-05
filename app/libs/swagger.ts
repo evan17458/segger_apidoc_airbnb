@@ -6,7 +6,7 @@ export const getApiDocs = async () => {
     definition: {
       openapi: "3.0.0",
       info: {
-        title: "Next Swagger API Example",
+        title: "Airbnb訂房 API 文件",
         version: "1.0",
       },
       components: {

@@ -4,6 +4,32 @@ interface IParams {
   userId?: string;
   authorId?: string;
 }
+/**
+ * @swagger
+ * /api/reservations:
+ *   get:
+ *     summary: 取得房東所有預約訂單
+ *     parameters:
+ *       - name: listingId
+ *         in: query
+ *         schema:
+ *           type: string
+ *       - name: userId
+ *         in: query
+ *         schema:
+ *           type: string
+ *       - name: authorId
+ *         in: query
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Array of reservation objects
+ *
+ *       401:
+ *         description: Not authenticated
+ */
+
 export default async function getReservations(params: IParams) {
   try {
     const { listingId, userId, authorId } = params;
