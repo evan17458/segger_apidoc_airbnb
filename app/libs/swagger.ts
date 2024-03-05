@@ -12,7 +12,7 @@ export const getApiDocs = async () => {
       components: {
         securitySchemes: {
           BearerAuth: {
-            type: "http",
+            type: "https",
             scheme: "bearer",
             bearerFormat: "JWT",
           },
