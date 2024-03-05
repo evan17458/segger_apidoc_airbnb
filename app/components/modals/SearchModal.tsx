@@ -46,21 +46,6 @@ const SearchModal = () => {
     [location]
   );
 
-  //  dynamic是一個高階函數,它可以讓你動態導入React元件,
-  //  只有在客戶端渲染時才加載該元件的代碼。
-  //  這對於減少首次加載的JavaScript代碼體積很有幫助。
-
-  // { ssr: false }: 這是一個選項對象,其中設置了ssr: false。
-  // 這告訴Next.js,導入的組件不應該在服務器端渲染。
-  // 通常,我們將這個設置應用於導入無法在服務器端渲染的組件
-  // ,例如依賴於瀏覽器API的組件。
-  // 所以,這段代碼導入了../Map模組中的內容,
-  // 並將其設置為在客戶端動態加載,
-  // 而不是在服務器端渲染。
-  // 這對於優化應用程式的性能很有幫助,
-  // 因為它可以減少服務器端渲染的JavaScript體積,
-  // 同時仍然可以在客戶端渲染所有必需的組件。
-
   const onBack = useCallback(() => {
     setStep((value) => value - 1);
   }, []);
@@ -78,10 +63,6 @@ const SearchModal = () => {
 
     if (params) {
       currentQuery = qs.parse(params.toString());
-      //解析查询字符串:
-      // const queryString = "foo=bar&abc=xyz&hello=world";
-      // const parsed = qs.parse(queryString);
-      // console.log(parsed); // => { foo: 'bar', abc: 'xyz', hello: 'world' }
     }
 
     const updatedQuery: any = {
@@ -107,10 +88,6 @@ const SearchModal = () => {
       },
       { skipNull: true }
     );
-    //格式化对象为查询字符串:
-    // const obj = { foo: "bar", abc: "xyz", hello: "world" };
-    // const str = qs.stringify(obj);
-    // console.log(str); // => 'foo=bar&abc=xyz&hello=world'
 
     setStep(STEPS.LOCATION);
     searchModal.onClose();
@@ -152,7 +129,7 @@ const SearchModal = () => {
         onChange={(value) => setLocation(value as CountrySelectValue)}
       />
       <hr />
-      <Map center={location?.latlng} />
+      {/* <Map center={location?.latlng} /> */}
     </div>
   );
 

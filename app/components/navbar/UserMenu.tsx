@@ -96,43 +96,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
             top-12 
             text-sm
           "
-        >
-          <div className="flex flex-col cursor-pointer">
-            {currentUser ? (
-              <>
-                <MenuItem
-                  label="我的旅行"
-                  onClick={() => router.push("/trips")}
-                />
-                {/* 客人的預約行程 */}
-                <MenuItem
-                  label="我的最愛"
-                  onClick={() => router.push("/favorites")}
-                />
-                <MenuItem
-                  label="我的預訂"
-                  onClick={() => router.push("/reservations")}
-                />
-                {/* 房東的訂單 */}
-                <MenuItem
-                  label="我的房產"
-                  onClick={() => router.push("/properties")}
-                />
-                <MenuItem
-                  label="在Airbnb上發佈房源"
-                  onClick={rentModal.onOpen}
-                />
-                <hr />
-                <MenuItem label="登出" onClick={() => signOut()} />
-              </>
-            ) : (
-              <>
-                <MenuItem label="登入" onClick={loginModal.onOpen} />
-                <MenuItem label="註冊" onClick={registerModal.onOpen} />
-              </>
-            )}
-          </div>
-        </div>
+        ></div>
       )}
     </div>
   );
